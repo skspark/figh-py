@@ -1,4 +1,4 @@
-from typing import Any, Dict, Generic, TypeVar
+from typing import Any, Dict
 
 import yaml
 from github import Github
@@ -15,7 +15,6 @@ class GithubConfigStorage(ConfigStorage):
     file_format: ConfigFileFormat
 
     class Config:
-        underscore_attrs_are_private = True
         arbitrary_types_allowed = True
 
     def __init__(

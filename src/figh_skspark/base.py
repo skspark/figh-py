@@ -1,14 +1,10 @@
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
-
-from pydantic import BaseModel
+from typing import Any, Dict
 
 VERSION_LATEST = "latest"
 
-T = TypeVar("T")
 
-
-class ConfigStorage(ABC, Generic[T]):
+class ConfigStorage(ABC):
     @abstractmethod
-    def get(self, version: str = VERSION_LATEST) -> T:
+    def get(self, version: str = VERSION_LATEST) -> Dict[str, Any]:
         """returns configuration of the version"""
