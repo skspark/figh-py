@@ -1,2 +1,3 @@
-# github-config-storage-py
+# figh-py
 github as config storage, in python
+
