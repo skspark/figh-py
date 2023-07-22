@@ -1,6 +1,6 @@
 # Prerequisites
 ```shell
-make setup
+make local_setup
 ```
 
 # Run Local

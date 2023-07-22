@@ -1,0 +1,18 @@
+[project]
+name = "figh-py"
+version = "0.1.0"
+description = "github as configuration storage, in python"
+authors = [
+    {name = "skspark", email = "wondershine.one@gmail.com"},
+]
+dependencies = [
+    "typing>=3.7.4.3",
+    "pytest>=7.4.0",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
