@@ -1,4 +1,4 @@
-from typing import Generic, TypeVar
+from typing import Any, Dict, Generic, TypeVar
 
 import yaml
 from github import Github
@@ -7,10 +7,8 @@ from github.Repository import Repository
 from src.figh_skspark.base import VERSION_LATEST, ConfigStorage
 from src.figh_skspark.config_file_format import ConfigFileFormat
 
-T = TypeVar("T")
 
-
-class GithubConfigStorage(Generic[T], ConfigStorage):
+class GithubConfigStorage(ConfigStorage):
     github: Github
     repo: Repository
     base_branch: str
@@ -23,13 +21,13 @@ class GithubConfigStorage(Generic[T], ConfigStorage):
     def __init__(
         self,
         repo_name: str,
-        github_token: str,
+        token: str,
         base_branch: str = "main",
         base_path: str = "/",
         file_format: ConfigFileFormat = ConfigFileFormat.YAML,
     ):
         self.repo_name = repo_name
-        self.github = Github(github_token)
+        self.github = Github(token)
         self.repo = self.github.get_repo(repo_name)
         self.base_branch = base_branch
         self.base_path = base_path
@@ -44,7 +42,8 @@ class GithubConfigStorage(Generic[T], ConfigStorage):
         ]
         return config_files
 
-    def _merge_configs(self, config_files):
+    # TODO: add filename prefix
+    def _merge_configs(self, config_files) -> Dict[str, Any]:
         if self.file_format == ConfigFileFormat.YAML:
             merged_config = {}
             for file in config_files:
@@ -55,7 +54,7 @@ class GithubConfigStorage(Generic[T], ConfigStorage):
         else:
             raise ValueError(f"unsupported config file format: {self.file_format}")
 
-    def get(self, version: str = VERSION_LATEST) -> T:
+    def get(self, version: str = VERSION_LATEST) -> Dict[str, Any]:
         if version is VERSION_LATEST:
             config_files = self._get_repo_contents(self.base_branch)
         else:
@@ -63,5 +62,4 @@ class GithubConfigStorage(Generic[T], ConfigStorage):
             tag_sha = tag_ref.object.sha
             config_files = self._get_repo_contents(tag_sha)
 
-        merged_config = self._merge_configs(config_files)
-        return T(**merged_config)
+        return self._merge_configs(config_files)

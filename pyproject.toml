@@ -29,4 +29,5 @@ dev = [
     "pytest>=7.4.0",
     "wheel>=0.40.0",
     "twine>=4.0.2",
+    "python-dotenv>=0.21.1",
 ]

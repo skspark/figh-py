@@ -3,8 +3,24 @@
 make local_setup
 ```
 
-# Run Local
+Note that we use pdm for package manager.
 ```shell
-pip install streamlit
-pip install -r requirements.txt
+pdm add {package-name}
+pdm remove {package-name}
+pdm add {package-name} --dev # dev dependency
+```
+
+# Run tests
+## Unit tests
+```shell
+make unit_tests
+```
+
+## Integration Tests
+for integration tests, you need to setup env variables to fully test all functions.
+
+```shell
+cp .env.sample .env
+# and fill in all env variables in .env
+make integration_tests
 ```

@@ -1,10 +1,9 @@
+import os
+
 import pytest
+from dotenv import load_dotenv
 
 
 @pytest.fixture(scope="session")
-def test_container() -> str:
-    return "hi"
-
-
-def test_sample(test_container):
-    pass
+def setup_test_env():
+    load_dotenv()
