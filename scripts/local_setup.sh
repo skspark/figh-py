@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/zsh
 
-REQUIRED_COMMANDS=("pre-commit" "pylint" "pdm" "pytest")
+REQUIRED_COMMANDS=( "pre-commit" "pylint" "pdm" "pytest" )
 
 check_command_installed() {
   local cmd=$1
@@ -12,7 +12,7 @@ check_command_installed() {
 }
 
 # check required commands
-for cmd in "${REQUIRED_COMMANDS[@]}}"
+for cmd in "${REQUIRED_COMMANDS[@]}"
 do
     check_command_installed $cmd
 done
