@@ -10,6 +10,12 @@ pdm remove {package-name}
 pdm add {package-name} --dev # dev dependency
 ```
 
+# Build
+```shell
+pdm build
+#pip install dist/....whl
+```
+
 # Run tests
 ## Unit tests
 ```shell

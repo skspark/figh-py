@@ -1,4 +1,4 @@
-from src.figh_skspark.config_file_format import ConfigFileFormat
+from src.figh.config_file_format import ConfigFileFormat
 
 
 def test_config_file_format_matched():

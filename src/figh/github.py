@@ -7,9 +7,9 @@ from github import Auth, Github
 from github.ContentFile import ContentFile
 from github.Repository import Repository
 
-from src.figh_skspark.base import VERSION_LATEST, ConfigStorage
-from src.figh_skspark.config_file_format import ConfigFileFormat
-from src.figh_skspark.util import nested_set
+from src.figh.base import VERSION_LATEST, ConfigStorage
+from src.figh.config_file_format import ConfigFileFormat
+from src.figh.util import nested_set
 
 
 class GithubConfigStorage(ConfigStorage):

@@ -1,4 +1,4 @@
-from src.figh_skspark.errors import DupKeyException
+from src.figh.errors import DupKeyException
 
 
 def nested_set(dic, keys, value):

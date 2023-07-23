@@ -3,8 +3,8 @@ from typing import Optional
 
 import pytest
 
-from src.figh_skspark.errors import DupKeyException
-from src.figh_skspark.github import GithubConfigStorage
+from src.figh.errors import DupKeyException
+from src.figh.github import GithubConfigStorage
 
 TEST_RESOURCES_PATH = "/tests/resources"
 
