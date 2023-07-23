@@ -1,4 +1,4 @@
-from src.figh.config_file_format import ConfigFileFormat
+from figh import ConfigFileFormat
 
 
 def test_config_file_format_matched():

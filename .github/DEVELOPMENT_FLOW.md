@@ -16,6 +16,13 @@ pdm build
 #pip install dist/....whl
 ```
 
+# Publish
+```shell
+#python -m pip install --upgrade twine
+python -m twine upload --repository testpypi dist/*
+python -m twine upload --repository pypi dist/*
+```
+
 # Run tests
 ## Unit tests
 ```shell

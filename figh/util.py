@@ -1,4 +1,4 @@
-from src.figh.errors import DupKeyException
+from figh.errors import DupKeyException
 
 
 def nested_set(dic, keys, value):

@@ -3,8 +3,7 @@ from typing import Optional
 
 import pytest
 
-from src.figh.errors import DupKeyException
-from src.figh.github import GithubConfigStorage
+from figh import DupKeyException, GithubConfigStorage
 
 TEST_RESOURCES_PATH = "/tests/resources"
 
