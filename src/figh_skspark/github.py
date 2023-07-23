@@ -1,3 +1,5 @@
+import base64
+import os
 from typing import Any, Dict, List
 
 import yaml
@@ -32,22 +34,27 @@ class GithubConfigStorage(ConfigStorage):
         self.base_branch = base_branch
         self.file_format = file_format
 
-    def _get_repo_contents(self, ref, root_path: str = "/") -> List[ContentFile]:
-        contents = self.repo.get_contents(root_path, ref=ref)
-        config_files = [
-            content
-            for content in contents
-            if content.type == "file" and self.file_format.matched(content.name)
-        ]
-        return config_files
+    def _get_repo_contents(self, ref, root_path: str = "/") -> Dict[str, Any]:
+        files = self.repo.get_contents(root_path, ref=ref)
+        all_files_data = {}
+        while files:
+            file_content = files.pop(0)
+            if file_content.type == "dir":
+                files.extend(self.repo.get_contents(file_content.path))
+            else:
+                content_string = base64.b64decode(file_content.content).decode("utf-8")
+                if self.file_format.matched(file_content.path):
+                    all_files_data[file_content.path] = content_string
+        return all_files_data
 
-    def _merge_configs(self, root_path: str, config_files: List[ContentFile]) -> Dict[str, Any]:
+    def _merge_configs(
+        self, root_path: str, config_files: Dict[str, ContentFile]
+    ) -> Dict[str, Any]:
         merged_config = {}
         if self.file_format == ConfigFileFormat.YAML:
-            for file in config_files:
-                config_keys = self._file_config_keys(root_path, file.path)
-                config_content = file.decoded_content.decode()
-                config_data = yaml.safe_load(config_content)
+            for path, content in config_files.items():
+                config_keys = self._file_config_keys(root_path, path)
+                config_data = yaml.safe_load(content)
                 nested_set(merged_config, config_keys, config_data)
             return merged_config
         else:
@@ -59,6 +66,7 @@ class GithubConfigStorage(ConfigStorage):
         file_path = file_path.lstrip("/")
         if file_path.startswith(root_path):
             file_path = file_path[len(root_path) :].lstrip("/")
+            file_path = os.path.splitext(file_path)[0]
             items = file_path.split("/")
             items = [item for item in items if item]
             return items
@@ -72,5 +80,4 @@ class GithubConfigStorage(ConfigStorage):
             tag_ref = self.repo.get_git_ref(f"tags/{version}")
             tag_sha = tag_ref.object.sha
             config_files = self._get_repo_contents(ref=tag_sha, root_path=root_path)
-
         return self._merge_configs(root_path=root_path, config_files=config_files)

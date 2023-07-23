@@ -1,7 +1,9 @@
 import os
+from typing import Optional
 
 import pytest
 
+from src.figh_skspark.errors import DupKeyException
 from src.figh_skspark.github import GithubConfigStorage
 
 TEST_RESOURCES_PATH = "/tests/resources"
@@ -15,18 +17,33 @@ def github_test_storage(setup_test_env) -> GithubConfigStorage:
 
 
 def test_single_file(github_test_storage):
+    expected = {"first": {"foo": {"bar": "first"}, "foo2": {"bar2": "second"}}}
     config = github_test_storage.get(root_path=f"{TEST_RESOURCES_PATH}/single-yaml")
     print(f"single-yaml file config: {config}")
-    assert len(config) >= 1
-    for k, v in config.items():
-        assert len(k) >= 1
-        assert len(v) >= 1
+    assert config is not None
+    assert config == expected
 
 
 def test_nested(github_test_storage):
+    expected = {
+        "first": {"foo": {"bar": "first"}},
+        "second": {
+            "base": {"foo": {"bar": "second"}},
+            "fourth": {"base": {"foo": {"bar": "fourth"}}},
+        },
+        "third": {"base": {"foo": {"bar": "third"}}},
+    }
     config = github_test_storage.get(root_path=f"{TEST_RESOURCES_PATH}/nested-yaml")
-    print(f"single-yaml file config: {config}")
-    assert len(config) >= 1
-    for k, v in config.items():
-        assert len(k) >= 1
-        assert len(v) >= 1
+    print(f"nested-yaml file config: {config}")
+
+    assert config is not None
+    assert config == expected
+
+
+def test_dup_key(github_test_storage):
+    dupkey_error: Optional[Exception] = None
+    try:
+        config = github_test_storage.get(root_path=f"{TEST_RESOURCES_PATH}/duplicated-yaml")
+    except DupKeyException as e:
+        dupkey_error = e
+    assert dupkey_error is not None

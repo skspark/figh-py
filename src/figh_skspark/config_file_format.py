@@ -4,9 +4,9 @@ from enum import Enum
 class ConfigFileFormat(Enum):
     YAML = "yaml"
 
-    def matched(self, file_name: str) -> bool:
+    def matched(self, file_path: str) -> bool:
         if self == ConfigFileFormat.YAML:
-            return file_name.endswith(".yaml")
+            return file_path.endswith(".yaml") or file_path.endswith(".yml")
         raise ValueError("unsupported file format to check match")
 
     def __str__(self):
