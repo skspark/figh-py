@@ -1,6 +1,6 @@
 [project]
 name = "figh"
-version = "0.1.2"
+version = "0.1.0"
 description = "version controlled configuration storage"
 authors = [
     {name = "skspark", email = "wondershine.one@gmail.com"},
